@@ -1,2 +1,2 @@
-# fecal.js
-Fecal.js HTML5 form validation.
+# Fecal.js
+Fecal.js validation tests for forms.
