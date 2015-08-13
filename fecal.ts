@@ -1,26 +1,63 @@
-var Fecal = (function () {
-    function Fecal(element) {
-        this.options = {
-            fields: 'input, select, textarea',
-            inlineErrors: false,
-            errorClass: 'form-controlGroup--error',
-            successClass: 'form-controlGroup--success'
-        };
+class Fecal {
+
+    //Default options.
+    options: {
+        fields: string;
+        inlineErrors: boolean;
+        errorClass: string;
+        successClass: string;
+    } = {
+        fields: 'input, select, textarea',
+        inlineErrors: false,
+        errorClass: 'form-controlGroup--error',
+        successClass: 'form-controlGroup--success'
+    }
+
+    element: Element
+
+    fields: NodeList
+
+    constructor(element: Element) {
         this.element = element;
         this.fields = this.element.querySelectorAll(this.options.fields);
-
+        
         //Disable native validation before attaching ours
-        this.element.setAttribute('novalidate', 'true');
+        this.element.setAttribute('novalidate', 'true')
         this.addEvents();
     }
-    Fecal.prototype.addEvents = function () {
+
+    addEvents() {
+        //Force numeric input
+        this.element.querySelector('[type=range], [type=number]').addEventListener('keyup', function() {
+            if (/[\D]/.test(this.value)) this.value = this.value.replace(/[^\0-9]/ig, '');
+        });
+
+        //Validate everything on submit
         this.element.querySelector('[type=submit]').addEventListener('click', this.validateAll.bind(this));
-    };
+        
+        //Validation on edit
+        for (var i = 0; i < this.fields.length; i++) {
+            this.fields[i].addEventListener('blur', function(e) {
+                this.validateInput(e.target);
+            }.bind(this));
 
-    Fecal.prototype.validateInput = function (field) {
-        var isValid = true, controlGroup = closest(field, '.form-controlGroup'), controlGroupMessage = controlGroup.querySelector('.form-controlGroup-message'), hasError = controlGroup.classList.contains(this.options.errorClass), errorMessage, testResult;
+            this.fields[i].addEventListener('focus', function(e) {
+                var controlGroup = closest(e.target, '.form-controlGroup')
+                controlGroup.classList.remove(this.options.errorClass)
+                controlGroup.classList.remove(this.options.successClass);
+            }.bind(this));
+        }
+    }
 
-        var doTest = function (test, field) {
+    validateInput(field: HTMLInputElement) {
+        var isValid = true,
+            controlGroup = closest(field, '.form-controlGroup'),
+            controlGroupMessage = controlGroup.querySelector('.form-controlGroup-message'),
+            hasError = controlGroup.classList.contains(this.options.errorClass),
+            errorMessage,
+            testResult;
+
+        var doTest = function(test, field: Element) {
             if (test.condition(field[0])) {
                 testResult = test.test(field[0]);
 
@@ -38,7 +75,7 @@ var Fecal = (function () {
                     doTest(Fecal.Tests[test], field);
                 }
             }
-
+              
             //Messaging
             controlGroup.classList.remove(this.options.errorClass);
             controlGroup.classList.remove(this.options.successClass);
@@ -58,31 +95,30 @@ var Fecal = (function () {
         }
 
         return isValid;
-    };
+    }
 
-    Fecal.prototype.validateAll = function () {
-        var isValid = true, focus = false;
+    validateAll() {
+        var isValid = true,
+            focus = false;
 
         for (var i = 0; i < this.fields.length; i++) {
-            if (!this.validateInput(this.fields[i])) {
+            if (!this.validateInput((<HTMLInputElement>this.fields[i]))) {
                 isValid = false;
 
                 if (focus === false) {
-                    this.fields[i].focus();
+                    (<HTMLElement>this.fields[i]).focus();
                     focus = true;
                 }
             }
         }
 
         return isValid;
-    };
+    }
 
-    Fecal.Tests = {
+    static Tests = {
         required: {
-            condition: function (field) {
-                return field.hasAttribute('required') || field.hasAttribute('data-val-required');
-            },
-            test: function (field) {
+            condition: function(field: Element) { return field.hasAttribute('required') || field.hasAttribute('data-val-required'); },
+            test: function(field: HTMLInputElement) {
                 //Required checkbox & radio, 1 should be checked.
                 if (field.getAttribute('type') === 'radio' || field.getAttribute('type') === 'checkbox') {
                     return document.querySelectorAll('input[name="' + field.getAttribute('name') + '"]:checked').length === 1;
@@ -92,61 +128,51 @@ var Fecal = (function () {
             errorMessage: 'val-required'
         },
         maxlength: {
-            condition: function (field) {
-                return field.hasAttribute('maxlength') || field.hasAttribute('data-val-length-max');
-            },
-            test: function (field) {
+            condition: function(field: Element) { return field.hasAttribute('maxlength') || field.hasAttribute('data-val-length-max'); },
+            test: function(field: HTMLInputElement) {
                 return field.value.length <= parseInt(field.getAttribute('maxlength') || field.getAttribute('data-val-length-max'), 10);
             },
             errorMessage: 'val-length'
         },
         minlength: {
-            condition: function (field) {
-                return field.hasAttribute('minlength') || field.hasAttribute('data-val-length-min');
-            },
-            test: function (field) {
+            condition: function(field: Element) { return field.hasAttribute('minlength') || field.hasAttribute('data-val-length-min'); },
+            test: function(field: HTMLInputElement) {
                 return field.value.length >= parseInt(field.getAttribute('minlength') || field.getAttribute('data-val-length-min'), 10);
             },
             errorMessage: 'val-length'
         },
         pattern: {
-            condition: function (field) {
-                return field.hasAttribute('pattern') || field.hasAttribute('data-val-regex-pattern');
-            },
-            test: function (field) {
+            condition: function(field: Element) { return field.hasAttribute('pattern') || field.hasAttribute('data-val-regex-pattern'); },
+            test: function(field: HTMLInputElement) {
                 return new RegExp(field.getAttribute('pattern') || field.getAttribute('data-val-regex-pattern')).test(field.value);
             },
             errorMessage: 'val-regex'
         },
         email: {
-            condition: function (field) {
-                return field.getAttribute('type') === 'email';
-            },
-            test: function (field) {
+            condition: function(field: Element) { return field.getAttribute('type') === 'email'; },
+            test: function(field: HTMLInputElement) {
                 return /^[a-zA-Z0-9.!#$%&’*+\/=?\^_`{|}~\-]+@[a-zA-Z0-9\-]+(?:\.[a-zA-Z0-9\-]+)*$/.test(field.value);
             },
             errorMessage: 'val-email'
         },
         matches: {
-            condition: function (field) {
-                return field.hasAttribute('data-val-equalto-other');
-            },
-            test: function (field) {
-                return field.value === document.querySelector('input[name=' + field.getAttribute('data-val-equalto-other').replace('*.', '') + ']').value;
+            condition: function(field: Element) { return field.hasAttribute('data-val-equalto-other'); },
+            test: function(field: HTMLInputElement) {
+                return field.value === (<HTMLInputElement>document.querySelector('input[name=' + field.getAttribute('data-val-equalto-other').replace('*.', '') + ']')).value;
             },
             errorMessage: 'val-equalto'
         }
-    };
-    return Fecal;
-})();
+    }
+}
 
 //Closest helper
-function closest(elem, selector) {
+function closest(elem, selector: string) {
+
     var matchesSelector = elem.matches || elem.webkitMatchesSelector || elem.mozMatchesSelector || elem.msMatchesSelector;
 
     while (elem) {
         if (matchesSelector.bind(elem)(selector)) {
-            return elem;
+            return <Element>elem;
         } else {
             elem = elem.parentElement;
         }
