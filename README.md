@@ -1,2 +1,8 @@
-# Fecal.js
-Fecal.js validation tests for forms.
+# D’accord 
+Validation tests for forms.
+
+```js
+var Daccord = require('daccord');
+
+new Daccord(document.querySelector('form'));
+```
