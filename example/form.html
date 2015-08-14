@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<title>Form</title>
+		<link rel="stylesheet" href="http://trykickoff.github.io/css/kickoff.css">
+		<!--[if IE]>
+			<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+		<![endif]-->
+	</head>
+	<body>
+		<form class="l-container">
+			<div class="form-controlGroup">
+				<label class="form-label" for="field1">Text, required, maxlength 10</label>
+				<input class="form-input" id="field1" name="field1" type="text" required maxlength="10">
+			</div>
+			<div class="form-controlGroup">
+				<label class="form-label" for="field2">Email, required</label>
+				<input class="form-input" id="field2" name="field2" type="email" required>
+			</div>
+			<button class="btn btn--primary" type="submit">Submit</button>
+		</form>
+	</body>
+	<script src="../daccord.js"></script>
+	<script>
+		new Daccord(document.querySelector('form'));
+	</script>
+</html>

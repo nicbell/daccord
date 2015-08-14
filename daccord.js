@@ -15,16 +15,18 @@ var Daccord = (function () {
         this.addEvents();
     }
     Daccord.prototype.addEvents = function () {
-        //Force numeric input
-        this.element.querySelector('[type=range], [type=number]').addEventListener('keyup', function () {
-            if (/[\D]/.test(this.value))
-                this.value = this.value.replace(/[^\0-9]/ig, '');
-        });
-
         //Validate everything on submit
         this.element.querySelector('[type=submit]').addEventListener('click', this.validateAll.bind(this));
 
         for (var i = 0; i < this.fields.length; i++) {
+            //Force numeric input
+            if (this.fields[i].getAttribute('type') === 'range' || this.fields[i].getAttribute('type') === 'number') {
+                this.fields[i].addEventListener('keyup', function () {
+                    if (/[\D]/.test(this.value))
+                        this.value = this.value.replace(/[^\0-9]/ig, '');
+                });
+            }
+
             this.fields[i].addEventListener('blur', function (e) {
                 this.validateInput(e.target);
             }.bind(this));
@@ -41,8 +43,8 @@ var Daccord = (function () {
         var isValid = true, controlGroup = closest(field, '.form-controlGroup'), controlGroupMessage = controlGroup.querySelector('.form-controlGroup-message'), hasError = controlGroup.classList.contains(this.options.errorClass), errorMessage, testResult;
 
         var doTest = function (test, field) {
-            if (test.condition(field[0])) {
-                testResult = test.test(field[0]);
+            if (test.condition(field)) {
+                testResult = test.test(field);
 
                 if (!testResult) {
                     var attributeName = 'data-' + test.errorMessage;
@@ -94,7 +96,7 @@ var Daccord = (function () {
             }
         }
 
-        return isValid;
+        return false;
     };
 
     Daccord.Tests = {

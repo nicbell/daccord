@@ -27,16 +27,18 @@ class Daccord {
     }
 
     addEvents() {
-        //Force numeric input
-        this.element.querySelector('[type=range], [type=number]').addEventListener('keyup', function() {
-            if (/[\D]/.test(this.value)) this.value = this.value.replace(/[^\0-9]/ig, '');
-        });
-
         //Validate everything on submit
         this.element.querySelector('[type=submit]').addEventListener('click', this.validateAll.bind(this));
         
         //Validation on edit
-        for (var i = 0; i < this.fields.length; i++) {
+        for (var i = 0; i < this.fields.length; i++) {       
+            //Force numeric input
+            if ((<Element>this.fields[i]).getAttribute('type') === 'range' || (<Element>this.fields[i]).getAttribute('type') === 'number') {
+                this.fields[i].addEventListener('keyup', function() {
+                    if (/[\D]/.test(this.value)) this.value = this.value.replace(/[^\0-9]/ig, '');
+                });
+            }
+
             this.fields[i].addEventListener('blur', function(e) {
                 this.validateInput(e.target);
             }.bind(this));
@@ -58,8 +60,8 @@ class Daccord {
             testResult;
 
         var doTest = function(test, field: Element) {
-            if (test.condition(field[0])) {
-                testResult = test.test(field[0]);
+            if (test.condition(field)) {
+                testResult = test.test(field);
 
                 if (!testResult) {
                     var attributeName = 'data-' + test.errorMessage;
@@ -111,7 +113,7 @@ class Daccord {
                 }
             }
         }
-
+        
         return isValid;
     }
 
