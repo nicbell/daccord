@@ -1,0 +1,27 @@
+{
+  "name": "daccord",
+  "version": "1.0.0",
+  "description": "Validation library.",
+  "author": "Nic Bell",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://nicbell@github.com/nicbell/daccord.git"
+  },
+  "bugs": {
+    "url": "https://github.com/nicbell/daccord/issues"
+  },
+  "directories": {
+    "example": "example"
+  },
+  "main": "js/daccord.js",
+  "engines": {
+    "node": ">=0.12"
+  },
+  "dependencies": {},
+  "devDependencies": {},
+  "scripts": {
+    "prepublish": "buildweb",
+    "buildweb": "npm install -g browserify && browserify -s Daccord js/daccord.js > dist/daccord.web.js"
+  }
+}
