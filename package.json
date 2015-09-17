@@ -1,5 +1,5 @@
 {
-  "name": "daccord",
+  "name": "daccord-validation",
   "version": "1.0.0",
   "description": "Validation library.",
   "author": "Nic Bell",
@@ -21,7 +21,10 @@
   "dependencies": {},
   "devDependencies": {},
   "scripts": {
-    "prepublish": "buildweb",
+    "prepublish": "npm run buildweb",
     "buildweb": "npm install -g browserify && browserify -s Daccord js/daccord.js > dist/daccord.web.js"
-  }
+  },
+  "keywords": [
+    "validation", "kickoff"
+  ]
 }
