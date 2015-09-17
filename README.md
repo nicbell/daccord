@@ -1,10 +1,11 @@
-# D’accord 
+D’accord
+======
 Kickof validation plugin for forms. Uses HTML 5 form attributes to trigger validation tests.
 
 Usage
 ---
 ```js
-var Daccord = require('daccord');
+var Daccord = require('daccord-validation');
 new Daccord(document.querySelector('form'));
 ```
 ```html
