@@ -1,6 +1,6 @@
 D’accord
 ======
-Kickof validation plugin for forms. Uses HTML 5 form attributes to trigger validation tests.
+Kickoff validation plugin for forms. Uses HTML 5 form attributes to trigger validation tests.
 
 Usage
 ---
