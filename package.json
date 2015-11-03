@@ -16,15 +16,20 @@
   },
   "main": "js/daccord.js",
   "engines": {
-    "node": ">=0.12"
+    "node": ">=4"
   },
-  "dependencies": {},
-  "devDependencies": {},
+  "dependencies": {
+    "object-assign": "^4.0.1"
+  },
+  "devDependencies": {
+    "browserify": "latest"
+  },
   "scripts": {
-    "prepublish": "npm run buildweb",
-    "buildweb": "npm install -g browserify && browserify -s Daccord js/daccord.js > dist/daccord.web.js"
+    "prepublish": "npm i && npm run buildweb",
+    "buildweb": "browserify dist/daccord.js > dist/daccord.web.js -s Daccord"
   },
   "keywords": [
-    "validation", "kickoff"
+    "validation",
+    "kickoff"
   ]
 }

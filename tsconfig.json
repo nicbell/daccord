@@ -2,9 +2,9 @@
     "compilerOptions": {
         "target": "ES5",
         "module": "commonjs",
-        "outDir": "js"
+        "outDir": "dist"
     },
     "files": [
-        "ts/daccord.ts"
+        "src/daccord.ts"
     ]
 }

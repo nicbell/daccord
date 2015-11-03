@@ -1,38 +1,75 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<title>Form</title>
-		<link rel="stylesheet" href="http://trykickoff.github.io/css/kickoff.css">
-		<!--[if IE]>
-			<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-		<![endif]-->
+
+<head>
+	<meta charset="utf-8" />
+	<title>Form</title>
+	<link rel="stylesheet" href="kickoff.css">
+	<!--[if IE]>
+		<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+
+	<style>
+		.form-message {
+			display: none;
+		}
 		
-		<style>
-			.form-controlGroup-message {display: none; margin-top: 7px;}
-			.form-controlGroup--error .form-controlGroup-message {display: block;}
-		</style>
-	</head>
-	<body>
-		<form class="l-container" action="/somewhere">
-			<div class="form-controlGroup">
-				<label class="form-label" for="field1">Text, required, maxlength 10</label>
-				<input class="form-input" id="field1" name="field1" type="text" required maxlength="10">
+		.has-error .form-message, 
+		.has-success .form-message {
+			display: block;
+		}
+	</style>
+</head>
+
+<body>
+	<header class="masthead masthead-all clearfix">
+		<div class="l-container">
+			<h1 class="logo logoStyle"><a href="/">D'<span>accord</span></a></h1>
+		</div>
+	</header>
+
+	<div class="l-container">
+		<div class="g-row entry">
+			<div class="g-col g-span12">
+				<form action="/somewhere">
+					<div class="form-controlGroup">
+						<label class="form-label" for="field1">Text, required, maxlength 10</label>
+						<input class="form-input" id="field1" name="field1" type="text" required maxlength="10">
+					</div>
+					<div class="form-controlGroup">
+						<label class="form-label" for="field2">Email, required</label>
+						<input class="form-input" id="field2" name="field2" type="email" required>
+					</div>
+					<div class="form-controlGroup">
+						<label class="form-label" for="field3">Text, required with message</label>
+						<input class="form-input" id="field3" name="field3" type="text" data-val-required="This field is required" required>
+						<div class="form-message"></div>
+					</div>
+					<div class="form-controlGroup">
+						<label class="form-label" for="field4">Pattern ^(\w{2,9})$, required with message</label>
+						<input class="form-input" id="field4" name="field4" type="text" pattern="^(\w{2,9})$" data-val-regex="Must be between 2 and 9 letters long" data-val-required="This field is required" required>
+						<div class="form-message"></div>
+					</div>
+					<div class="form-controlGroup">
+						<label class="form-label" for="field5">Name, required with message</label>
+						<input class="form-input" id="field5" name="field5" type="text" data-val-required="This field is required" required>
+						<div class="form-message"></div>
+					</div>
+					<div class="form-controlGroup">
+						<label class="form-label" for="field5">Confirm Name, matches name  with message</label>
+						<input class="form-input" id="field5" name="field5" type="text" data-val-equalto-other="field5" data-val-equalto="Names must match" data-val-required="This field is required" required>
+						<div class="form-message"></div>
+					</div>
+					
+					<button class="btn btn--primary" type="submit">Submit</button>
+				</form>
 			</div>
-			<div class="form-controlGroup">
-				<label class="form-label" for="field2">Email, required</label>
-				<input class="form-input" id="field2" name="field2" type="email" required>
-			</div>
-			<div class="form-controlGroup">
-				<label class="form-label" for="field3">Text, required with message</label>
-				<input class="form-input" id="field3" name="field3" type="text" data-val-required="This field is required" required>
-				<div class="form-controlGroup-message"></div>
-			</div>
-			<button class="btn btn--primary" type="submit">Submit</button>
-		</form>
-	</body>
-	<script src="../dist/daccord.web.js"></script>
-	<script>
-		new Daccord(document.querySelector('form'));
-	</script>
+		</div>
+	</div>
+</body>
+<script src="../dist/daccord.web.js"></script>
+<script>
+	new Daccord(document.querySelector('form'));
+</script>
+
 </html>

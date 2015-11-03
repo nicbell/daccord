@@ -21,7 +21,7 @@ new Daccord(document.querySelector('form'));
 	<div class="form-controlGroup">
 		<label class="form-label" for="field3">Text, required with message</label>
 		<input class="form-input" id="field3" name="field3" type="text" data-val-required="This field is required" required>
-		<div class="form-controlGroup-message"></div>
+		<div class="form-message"></div>
 	</div>
 	<button class="btn btn--primary" type="submit">Submit</button>
 </form>
