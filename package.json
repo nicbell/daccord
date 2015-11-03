@@ -14,7 +14,7 @@
   "directories": {
     "example": "example"
   },
-  "main": "js/daccord.js",
+  "main": "dist/daccord.js",
   "engines": {
     "node": ">=4"
   },
@@ -25,7 +25,7 @@
     "browserify": "latest"
   },
   "scripts": {
-    "prepublish": "npm i && npm run buildweb",
+    "prepublish": "npm run buildweb",
     "buildweb": "browserify dist/daccord.js > dist/daccord.web.js -s Daccord"
   },
   "keywords": [
