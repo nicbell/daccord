@@ -1,4 +1,5 @@
 (function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.Daccord = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+"use strict";
 /**
  * Closest helper
  */
@@ -18,6 +19,7 @@ module.exports = closest;
 
 },{}],2:[function(require,module,exports){
 /// <reference path="../typings/tsd.d.ts" />
+"use strict";
 /** Node module requires */
 var objectAssign = require('object-assign');
 /** TypeScript imports */
@@ -34,7 +36,8 @@ var Daccord = (function () {
             inlineErrors: false,
             errorClass: 'has-error',
             successClass: 'has-success',
-            focus: false
+            focus: false,
+            liveValidation: false
         };
         this.element = element;
         this.options = objectAssign({}, this.options, options || {});
@@ -55,14 +58,21 @@ var Daccord = (function () {
                         this.value = this.value.replace(/[^\0-9]/ig, '');
                 });
             }
+            // Validate field on blur
             this.fields[i].addEventListener('blur', function (e) {
                 this.validateInput(e.target);
             }.bind(this));
+            // Remove error state on focus
             this.fields[i].addEventListener('focus', function (e) {
                 var controlGroup = closest(e.target, '.form-controlGroup');
                 controlGroup.classList.remove(this.options.errorClass);
                 controlGroup.classList.remove(this.options.successClass);
             }.bind(this));
+            if (this.options.liveValidation) {
+                this.fields[i].addEventListener('keyup', function (e) {
+                    this.validateInput(e.target);
+                }.bind(this));
+            }
         }
     };
     Daccord.prototype.validateInput = function (field) {
@@ -117,10 +127,11 @@ var Daccord = (function () {
         return isValid;
     };
     return Daccord;
-})();
+}());
 module.exports = Daccord;
 
 },{"./closest":1,"./validationtests":3,"object-assign":4}],3:[function(require,module,exports){
+"use strict";
 /**
  * Tests
  */
