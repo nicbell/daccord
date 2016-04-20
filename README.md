@@ -32,6 +32,34 @@ Error messages are shown if there is an element with the class of ```form-messag
 
 ```has-error``` and ```has-success``` are added to the ```form-controlGroup``` to indicate success or failure.
 
+Options
+---
+#### fields
+Type: `String`
+Default: `input, select, textarea`
+
+Fields to validate.
+
+#### inlineErrors
+Type: `Boolean`
+Default `false`
+
+#### errorClass
+Type: `String`
+Default `has-error`
+
+#### successClass
+Type: `String`
+Default `has-success`
+
+#### focus
+Type: `Boolean`
+Default `false`
+
+#### liveValidation
+Type: `Boolean`
+Default `false`
+
 API
 ---
 
