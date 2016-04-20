@@ -35,29 +35,29 @@ Error messages are shown if there is an element with the class of ```form-messag
 Options
 ---
 #### fields
-Type: `String`
+Type: `String`  
 Default: `input, select, textarea`
 
 Fields to validate.
 
 #### inlineErrors
-Type: `Boolean`
+Type: `Boolean`  
 Default: `false`
 
 #### errorClass
-Type: `String`
+Type: `String`  
 Default: `has-error`
 
 #### successClass
-Type: `String`
+Type: `String`  
 Default: `has-success`
 
 #### focus
-Type: `Boolean`
+Type: `Boolean`  
 Default: `false`
 
 #### liveValidation
-Type: `Boolean`
+Type: `Boolean`  
 Default: `false`
 
 API
