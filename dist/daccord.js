@@ -1,4 +1,5 @@
 /// <reference path="../typings/tsd.d.ts" />
+"use strict";
 /** Node module requires */
 var objectAssign = require('object-assign');
 /** TypeScript imports */
@@ -15,7 +16,8 @@ var Daccord = (function () {
             inlineErrors: false,
             errorClass: 'has-error',
             successClass: 'has-success',
-            focus: false
+            focus: false,
+            liveValidation: false
         };
         this.element = element;
         this.options = objectAssign({}, this.options, options || {});
@@ -36,14 +38,21 @@ var Daccord = (function () {
                         this.value = this.value.replace(/[^\0-9]/ig, '');
                 });
             }
+            // Validate field on blur
             this.fields[i].addEventListener('blur', function (e) {
                 this.validateInput(e.target);
             }.bind(this));
+            // Remove error state on focus
             this.fields[i].addEventListener('focus', function (e) {
                 var controlGroup = closest(e.target, '.form-controlGroup');
                 controlGroup.classList.remove(this.options.errorClass);
                 controlGroup.classList.remove(this.options.successClass);
             }.bind(this));
+            if (this.options.liveValidation) {
+                this.fields[i].addEventListener('keyup', function (e) {
+                    this.validateInput(e.target);
+                }.bind(this));
+            }
         }
     };
     Daccord.prototype.validateInput = function (field) {
@@ -98,5 +107,5 @@ var Daccord = (function () {
         return isValid;
     };
     return Daccord;
-})();
+}());
 module.exports = Daccord;

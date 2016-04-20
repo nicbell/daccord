@@ -7,6 +7,8 @@ Usage
 ```js
 var Daccord = require('daccord-validation');
 new Daccord(document.querySelector('form'));
+//or
+new Daccord(document.querySelector('form'), options);
 ```
 ```html
 <form class="l-container" action="/somewhere">
@@ -26,9 +28,9 @@ new Daccord(document.querySelector('form'));
 	<button class="btn btn--primary" type="submit">Submit</button>
 </form>
 ```
-Error messages are shown if there is an element with the class of ```form-controlGroup-message``` in the same ```form-controlGroup``` as the input field.
+Error messages are shown if there is an element with the class of ```form-message``` in the same ```form-controlGroup``` as the input field.
 
-```form-controlGroup--error``` and ```form-controlGroup--success``` are added to the ```form-controlGroup``` to indicate success or failure.
+```has-error``` and ```has-success``` are added to the ```form-controlGroup``` to indicate success or failure.
 
 API
 ---

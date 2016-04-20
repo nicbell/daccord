@@ -17,6 +17,7 @@ interface DaccordOptions {
     errorClass: string;
     successClass: string;
     focus: boolean;
+    liveValidation: boolean;
 }
 
 
@@ -31,7 +32,8 @@ class Daccord {
         inlineErrors: false,
         errorClass: 'has-error',
         successClass: 'has-success',
-        focus: false
+        focus: false,
+        liveValidation: false
     }
 
     element: Element
@@ -43,7 +45,7 @@ class Daccord {
 
         this.options = objectAssign({}, this.options, options || {});
         this.fields = this.element.querySelectorAll(this.options.fields);
-        
+
         // Disable native validation before attaching ours
         this.element.setAttribute('novalidate', 'true')
         this.addEvents();
@@ -52,25 +54,33 @@ class Daccord {
     addEvents() {
         // Validate everything on submit
         this.element.querySelector('[type=submit]').addEventListener('click', this.validateAll.bind(this));
-        
+
         // Validation on edit
-        for (var i = 0; i < this.fields.length; i++) {       
+        for (var i = 0; i < this.fields.length; i++) {
             // Force numeric input
             if ((<Element>this.fields[i]).getAttribute('type') === 'range' || (<Element>this.fields[i]).getAttribute('type') === 'number') {
-                this.fields[i].addEventListener('keyup', function() {
+                this.fields[i].addEventListener('keyup', function () {
                     if (/[\D]/.test(this.value)) this.value = this.value.replace(/[^\0-9]/ig, '');
                 });
             }
 
-            this.fields[i].addEventListener('blur', function(e: Event) {
+            // Validate field on blur
+            this.fields[i].addEventListener('blur', function (e: Event) {
                 this.validateInput(e.target);
             }.bind(this));
 
-            this.fields[i].addEventListener('focus', function(e: Event) {
+            // Remove error state on focus
+            this.fields[i].addEventListener('focus', function (e: Event) {
                 var controlGroup = closest(e.target, '.form-controlGroup')
                 controlGroup.classList.remove(this.options.errorClass)
                 controlGroup.classList.remove(this.options.successClass);
             }.bind(this));
+
+            if (this.options.liveValidation) {
+                this.fields[i].addEventListener('keyup', function (e: Event) {
+                    this.validateInput(e.target);
+                }.bind(this));
+            }
         }
     }
 
@@ -82,7 +92,7 @@ class Daccord {
             errorMessage: string,
             testResult;
 
-        var doTest = function(test, field: Element) {
+        var doTest = function (test, field: Element) {
             if (test.condition(field)) {
                 testResult = test.test(field);
 
@@ -99,7 +109,7 @@ class Daccord {
                 var test = validationTests[index];
                 doTest(test, field);
             }
-              
+
             // Messaging
             controlGroup.classList.remove(this.options.errorClass);
             controlGroup.classList.remove(this.options.successClass);
