@@ -42,23 +42,23 @@ Fields to validate.
 
 #### inlineErrors
 Type: `Boolean`
-Default `false`
+Default: `false`
 
 #### errorClass
 Type: `String`
-Default `has-error`
+Default: `has-error`
 
 #### successClass
 Type: `String`
-Default `has-success`
+Default: `has-success`
 
 #### focus
 Type: `Boolean`
-Default `false`
+Default: `false`
 
 #### liveValidation
 Type: `Boolean`
-Default `false`
+Default: `false`
 
 API
 ---
