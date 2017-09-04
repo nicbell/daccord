@@ -3,7 +3,7 @@
   "version": "2.1.0",
   "description": "Validation library.",
   "author": "Nic Bell",
-  "license": "ISC",
+  "license": "Unlicense",
   "repository": {
     "type": "git",
     "url": "git+https://nicbell@github.com/nicbell/daccord.git"
